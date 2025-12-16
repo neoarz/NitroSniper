@@ -13,13 +13,13 @@ A simple Vencord/Equicord plugin to auto snipe nitro gift codes
 ## Credits
 - [Vencord](https://github.com/vencord/vencord)
 - [Equicord](https://github.com/Equicord/Equicord) (The fork im currently using)
-- Discord themselves for putting captcha on token based sniping inspiring me to make this :D
+- [Discord](https://discord.com) for putting captcha on token based sniping inspiring me to make this :D
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Support
-Make a github issue if you find any bugs or have any questions or preferably dm me on discord neoarz.
+Make a github issue if you find any bugs or have any questions or preferably dm me on discord `neoarz`.
 <br>
 <sub>If you find this project useful, consider leaving a star, would mean alot!!</sub>
 
