@@ -28,8 +28,7 @@ export default definePlugin({
         MESSAGE_CREATE({ message }) {
             if (!message.content) return;
 
-            // Regex to capture the code from various link formats
-            // Captures: discord.gift/CODE, discord.com/gifts/CODE, etc.
+            // Currently Captures: discord.gift/CODE, discord.com/gifts/CODE, im not sure if there are more but add/change the regex here
             const giftRegex = /(?:discord\.gift\/|discord\.com\/gifts?\/)([a-zA-Z0-9]{16,24})/;
 
             const match = message.content.match(giftRegex);
