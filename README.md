@@ -1,6 +1,6 @@
 # NitroSniper
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-8aadf4)](https://github.com/neoarz/NitroSniper)
+[![Version](https://img.shields.io/badge/Version-1.0.0-5865F2)](https://github.com/neoarz/NitroSniper)
 [![GitHub License](https://img.shields.io/github/license/neoarz/NitroSniper?color=%23e78284)](https://github.com/neoarz/NitroSniper/blob/main/LICENSE)
 [![Sponsor Me](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/neoarz)
 
