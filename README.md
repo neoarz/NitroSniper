@@ -9,7 +9,7 @@ A simple Vencord/Equicord plugin to auto snipe nitro gift codes
 
 | ![Demo of plugin](assets/snipes.png)                                                                            |
 | :--------------------------------------------------------------------------------------------------: |
-| Screenshot of plugin sniping **three** gifts back to back to back. Credits to [n0_.q3](https://discord.com/users/957164619061932045) |
+| This isn't even the full screenshot. See [here](https://github.com/neoarz/NitroSniper/blob/main/assets/full.png) |
 
 > [!CAUTION]
 > **Use at your own risk**
