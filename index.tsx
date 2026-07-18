@@ -1,5 +1,7 @@
 /*
 Made with ❤️ by neoarz
+Edited with 💜 by N0_.q3
+Cleanified with ❤️‍🩹 By VanityWya
 I am not responsible for any damage caused by this plugin; use at your own risk
 Vencord does not endorse/support this plugin (Works with Equicord as well)
 dm @neoarz if u need help or have any questions
@@ -12,6 +14,7 @@ import { Message } from "@vencord/discord-types";
 import { findByPropsLazy } from "@webpack";
 import { UserStore } from "@webpack/common";
 
+import { startCaptchaWatcher, stopCaptchaWatcher } from "./captchaWatcher";
 import { resolveGiftType } from "./giftCode";
 import { settings } from "./settings";
 import type { ClaimRequest, WebhookResult } from "./types";
@@ -69,8 +72,14 @@ function createClaimRequest(message: Message): ClaimRequest | null {
             : undefined,
         channelId: message.channel_id,
         guildId: message.guild_id,
-        messageId: message.id
+        messageId: message.id,
+        messageTimestamp: message.timestamp
     };
+}
+
+function getClaimDurationMs(request: ClaimRequest): number | null {
+    if (!request.messageTimestamp) return null;
+    return Math.max(0, Date.now() - new Date(request.messageTimestamp).getTime());
 }
 
 function notifyClaim(result: WebhookResult, request: ClaimRequest, giftType: string | null) {
@@ -78,7 +87,8 @@ function notifyClaim(result: WebhookResult, request: ClaimRequest, giftType: str
         settings.store.webhookUrl,
         result,
         request,
-        giftType
+        giftType,
+        getClaimDurationMs(request)
     ).catch(webhookError => {
         logger.error("Failed to send NitroSniper webhook notification", webhookError);
     });
@@ -122,16 +132,32 @@ function processQueue() {
 export default definePlugin({
     name: "NitroSniper",
     description: "Automatically redeems Nitro gift links sent in chat",
-    authors: [{
+    authors: [
+    {
         name: "neoarz",
         id: 218675193592283137n
-    }],
+    },
+    {
+        name: "n0_.q3",
+        id: 957164619061932045n
+    },
+    {
+        name: "Vanity",
+        id: 1058197096915808396n
+    }
+    ],
+
     tags: ["Chat", "Utility"],
     searchTerms: ["nitro", "gift", "redeem", "snipe"],
     settings,
 
     start() {
         resetState();
+        startCaptchaWatcher();
+    },
+
+    stop() {
+        stopCaptchaWatcher();
     },
 
     flux: {

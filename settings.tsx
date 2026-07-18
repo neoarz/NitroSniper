@@ -1,5 +1,7 @@
 /*
 Made with ❤️ by neoarz
+Edited with 💜 by N0_.q3
+Edited with ❤️‍🩹 by Vanitywya
 I am not responsible for any damage caused by this plugin; use at your own risk
 Vencord does not endorse/support this plugin (Works with Equicord as well)
 dm @neoarz if u need help or have any questions
@@ -45,6 +47,18 @@ export const settings = definePluginSettings({
         type: OptionType.BOOLEAN,
         description: "Do not redeem Nitro gift links from messages sent by you.",
         default: false,
+        restartNeeded: false
+    },
+    captchaAutoReload: {
+        type: OptionType.BOOLEAN,
+        description: "Reload Discord when a captcha stays on screen for too long.",
+        default: true,
+        restartNeeded: false
+    },
+    captchaStuckSeconds: {
+        type: OptionType.NUMBER,
+        description: "Reload Discord after a captcha has been visible for this many seconds.",
+        default: 10,
         restartNeeded: false
     },
     webhookUrl: {
