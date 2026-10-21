@@ -1,5 +1,6 @@
 /*
 Made with ❤️ by neoarz
+Edited with 💜 by N0_.q3
 I am not responsible for any damage caused by this plugin; use at your own risk
 Vencord does not endorse/support this plugin (Works with Equicord as well)
 dm @neoarz if u need help or have any questions

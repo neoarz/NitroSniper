@@ -1,10 +1,13 @@
 /*
 Made with ❤️ by neoarz
+Edited with 💜 by N0_.q3
+Cleanified with ❤️‍🩹 by Vanitywya
 I am not responsible for any damage caused by this plugin; use at your own risk
 Vencord does not endorse/support this plugin (Works with Equicord as well)
 dm @neoarz if u need help or have any questions
 https://github.com/neoarz/NitroSniper
 */
+
 
 import type { PluginNative } from "@utils/types";
 
@@ -18,6 +21,7 @@ import type {
 
 const SUCCESS_COLOR = 0x43b581;
 const FAILURE_COLOR = 0xf04747;
+const CAPTCHA_COLOR = 0xfaa61a;
 const TEST_COLOR = 0x5865f2;
 const WEBHOOK_NAME = "NitroSniper";
 
@@ -98,8 +102,23 @@ function buildMessageField(request: ClaimRequest): WebhookField | null {
     };
 }
 
-function buildClaimFields(request: ClaimRequest, giftType: string | null) {
+function formatClaimTime(ms: number) {
+    return `${(ms / 1000).toFixed(2)}s`;
+}
+
+function buildClaimTimeField(claimTimeMs: number | null): WebhookField | null {
+    if (claimTimeMs === null) return null;
+
+    return {
+        name: "Time to Claim:",
+        value: formatClaimTime(claimTimeMs),
+        inline: true
+    };
+}
+
+function buildClaimFields(request: ClaimRequest, giftType: string | null, claimTimeMs: number | null) {
     return [
+        buildClaimTimeField(claimTimeMs),
         buildGiftTypeField(giftType),
         buildAuthorField(request),
         buildMessageField(request)
@@ -132,13 +151,13 @@ function buildEmbedAuthor(request: ClaimRequest) {
     };
 }
 
-function buildClaimEmbed(result: WebhookResult, request: ClaimRequest, giftType: string | null): WebhookEmbed {
+function buildClaimEmbed(result: WebhookResult, request: ClaimRequest, giftType: string | null, claimTimeMs: number | null): WebhookEmbed {
     const presentation = getResultPresentation(result);
 
     return {
         title: presentation.title,
         color: presentation.color,
-        fields: buildClaimFields(request, giftType),
+        fields: buildClaimFields(request, giftType, claimTimeMs),
         timestamp: new Date().toISOString(),
         author: buildEmbedAuthor(request),
         footer: {
@@ -161,9 +180,14 @@ function buildTestWebhookPayload(): WebhookPayload {
     ]);
 }
 
-function buildClaimWebhookPayload(result: WebhookResult, request: ClaimRequest, giftType: string | null): WebhookPayload {
+function buildClaimWebhookPayload(
+    result: WebhookResult,
+    request: ClaimRequest,
+    giftType: string | null,
+    claimTimeMs: number | null
+): WebhookPayload {
     return createPayload([
-        buildClaimEmbed(result, request, giftType)
+        buildClaimEmbed(result, request, giftType, claimTimeMs)
     ]);
 }
 
@@ -201,12 +225,13 @@ export async function sendClaimWebhook(
     webhookUrl: string,
     result: WebhookResult,
     request: ClaimRequest,
-    giftType: string | null
+    giftType: string | null,
+    claimTimeMs: number | null = null
 ) {
     const url = parseWebhookUrl(webhookUrl);
     if (!url) return;
 
-    await postWebhook(url, buildClaimWebhookPayload(result, request, giftType));
+    await postWebhook(url, buildClaimWebhookPayload(result, request, giftType, claimTimeMs));
 }
 
 export async function sendTestWebhook(webhookUrl: string) {
@@ -216,4 +241,25 @@ export async function sendTestWebhook(webhookUrl: string) {
     }
 
     await postWebhook(url, buildTestWebhookPayload());
+}
+
+function buildCaptchaReloadWebhookPayload(stuckSeconds: number): WebhookPayload {
+    return createPayload([
+        {
+            title: "Captcha Detected",
+            color: CAPTCHA_COLOR,
+            description: `A captcha has been stuck on screen for over ${stuckSeconds} seconds. Reloading Discord...`,
+            timestamp: new Date().toISOString(),
+            footer: {
+                text: WEBHOOK_NAME
+            }
+        }
+    ]);
+}
+
+export async function sendCaptchaReloadWebhook(webhookUrl: string, stuckSeconds: number) {
+    const url = parseWebhookUrl(webhookUrl);
+    if (!url) return;
+
+    await postWebhook(url, buildCaptchaReloadWebhookPayload(stuckSeconds));
 }
